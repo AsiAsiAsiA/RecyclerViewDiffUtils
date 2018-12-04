@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">RecyclerViewDiffUtils</string>
+
+    <string name="hello_blank_fragment">Fragment Container</string>
+</resources>
