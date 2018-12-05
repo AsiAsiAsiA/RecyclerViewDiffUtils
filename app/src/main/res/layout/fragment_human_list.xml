@@ -4,14 +4,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".BlankFragment">
+    tools:context=".HumanListFragment">
 
     <TextView
+        android:id="@+id/tvTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textSize="@dimen/font_size"
-        android:text="@string/hello_blank_fragment" />
+        android:text="@string/human_list_fragment_title" />
+
+    <Button
+        android:id="@+id/btnGoToCanvas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_text"/>
+
+    <Button
+        android:id="@+id/btnBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_back"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"

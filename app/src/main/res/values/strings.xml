@@ -1,5 +1,12 @@
 <resources>
-    <string name="app_name">RecyclerViewDiffUtils</string>
 
-    <string name="hello_blank_fragment">Fragment Container</string>
+    <string name="app_name">RecyclerViewDiffUtils</string>
+    <string name="hello_world">Hello World!</string>
+
+    <string name="human_list_fragment_title">Human List Fragment</string>
+    <string name="button_text">Go!</string>
+    <string name="button_back">Back</string>
+
+    <string name="graphic_fragment_title">Graphic Fragment</string>
+
 </resources>
