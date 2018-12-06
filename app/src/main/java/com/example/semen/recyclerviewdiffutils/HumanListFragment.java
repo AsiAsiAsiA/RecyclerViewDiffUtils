@@ -2,15 +2,19 @@ package com.example.semen.recyclerviewdiffutils;
 
 
 import android.app.Fragment;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.example.semen.recyclerviewdiffutils.adapter.HumanAdapter;
@@ -27,6 +31,8 @@ import java.util.List;
 public class HumanListFragment extends Fragment {
     private HumanAdapter humanAdapter;
     private List<Human> newHumans;
+    private SearchView searchView;
+    private SearchView.OnQueryTextListener queryTextListener;
 
     public static Fragment newInstance() {
         return new HumanListFragment();
@@ -42,17 +48,54 @@ public class HumanListFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setHasOptionsMenu(true);
+
         newHumans = HumanManager.getHumanListOne();
         Button btnGo = view.findViewById(R.id.btnGoToCanvas);
         Button btnBack = view.findViewById(R.id.btnBack);
         TextView tvTitle = view.findViewById(R.id.tvTitle);
-        tvTitle.setTextColor(Color.GREEN);
 
         intiRecyclerView(view);
 
-        //TODO: Crash if delete Elements
         btnGo.setOnClickListener((v) -> humanAdapter.setHumans(HumanManager.getHumanListTwo()));
         btnBack.setOnClickListener((v) -> humanAdapter.setHumans(HumanManager.getHumanListThree()));
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_search, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.menuSearch);
+        final SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            //реагирует на отправление текста
+            @Override
+            public boolean onQueryTextSubmit(String newText) {
+                Log.i("onQueryTextSubmit", newText);
+                return true;
+            }
+
+            //реагирует на изменение текста(на каждую букву)
+            @Override
+            public boolean onQueryTextChange(String query) {
+                Log.i("onQueryTextChange", query);
+                return true;
+            }
+        });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menuSearch:
+                // Not implemented here
+                return false;
+            default:
+                break;
+        }
+        searchView.setOnQueryTextListener(queryTextListener);
+        return super.onOptionsItemSelected(item);
     }
 
     private void intiRecyclerView(View view) {
