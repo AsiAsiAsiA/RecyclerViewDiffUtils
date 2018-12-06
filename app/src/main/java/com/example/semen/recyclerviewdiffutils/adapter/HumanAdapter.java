@@ -15,7 +15,7 @@ import com.example.semen.recyclerviewdiffutils.model.Human;
 import java.util.List;
 
 public class HumanAdapter extends RecyclerView.Adapter<HumanAdapter.HumanViewHolder> {
-    private final List<Human> humans;
+    private List<Human> humans;
 
     public HumanAdapter(List<Human> humans) {
         this.humans = humans;
@@ -23,16 +23,10 @@ public class HumanAdapter extends RecyclerView.Adapter<HumanAdapter.HumanViewHol
 
     //Устанавлиет новый список и обновляет RecyclerView
     public void setHumans(List<Human> humans) {
-//        this.humans.clear();
-//        this.humans.addAll(humans);
-//        notifyDataSetChanged();
-        final HumanListDiffUtilCallback diffUtilCallback = new HumanListDiffUtilCallback(this.humans, humans);
+        final HumanListDiffUtilCallback diffUtilCallback = new HumanListDiffUtilCallback(humans, this.humans);
         final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffUtilCallback);
-
-        this.humans.clear();
-        this.humans.addAll(humans);
-
         diffResult.dispatchUpdatesTo(this);
+        this.humans = humans;
     }
 
     @NonNull
@@ -47,22 +41,6 @@ public class HumanAdapter extends RecyclerView.Adapter<HumanAdapter.HumanViewHol
         humanViewHolder.bind(humans.get(position));
     }
 
-//    @Override
-//    public void onBindViewHolder(@NonNull HumanViewHolder holder, int position, @NonNull List<Object> payloads) {
-//        if (payloads.isEmpty()) {
-//            super.onBindViewHolder(holder, position, payloads);
-//        } else {
-//            Bundle o = (Bundle) payloads.get(0);
-//            for (String key : o.keySet()) {
-//                if (key.equals("name") || key.equals("age")) {
-//                    holder.id.setText(String.valueOf(humans.get(position).getId()));
-//                    holder.id.setTextColor(Color.GREEN);
-//                    holder.name.setText(humans.get(position).getName());
-//                    holder.age.setText(String.valueOf(humans.get(position).getAge()));
-//                }
-//            }
-//        }
-//    }
 
     @Override
     public int getItemCount() {
@@ -86,8 +64,14 @@ public class HumanAdapter extends RecyclerView.Adapter<HumanAdapter.HumanViewHol
 
         void bind(final Human human) {
             name.setText(human.getName());
-            id.setText("ID: " + String.valueOf(human.getId()));
-            age.setText("Age: " + String.valueOf(human.getAge()));
+
+            id.setText(context.getString(R.string.view_holder_text,
+                    context.getString(R.string.id),
+                    String.valueOf(human.getId())));
+
+            age.setText(context.getString(R.string.view_holder_text,
+                    context.getString(R.string.age),
+                    String.valueOf(human.getAge())));
         }
     }
 }

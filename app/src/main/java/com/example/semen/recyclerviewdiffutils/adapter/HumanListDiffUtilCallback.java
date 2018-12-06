@@ -1,18 +1,16 @@
 package com.example.semen.recyclerviewdiffutils.adapter;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.util.DiffUtil;
 
 import com.example.semen.recyclerviewdiffutils.model.Human;
 
 import java.util.List;
 
-public class HumanListDiffUtilCallback extends DiffUtil.Callback {
-    List<Human> newList;
-    List<Human> oldList;
+class HumanListDiffUtilCallback extends DiffUtil.Callback {
+    private final List<Human> newList;
+    private final List<Human> oldList;
 
-    public HumanListDiffUtilCallback(List<Human> newList, List<Human> oldList) {
+    HumanListDiffUtilCallback(List<Human> newList, List<Human> oldList) {
         this.newList = newList;
         this.oldList = oldList;
     }
@@ -37,6 +35,6 @@ public class HumanListDiffUtilCallback extends DiffUtil.Callback {
         final Human newHuman = newList.get(newItemPosition);
         final Human oldHuman = oldList.get(oldItemPosition);
 
-        return oldHuman.equals(newHuman);
+        return newHuman.equals(oldHuman);
     }
 }

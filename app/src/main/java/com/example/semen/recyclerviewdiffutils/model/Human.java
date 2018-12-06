@@ -5,9 +5,9 @@ import android.support.annotation.NonNull;
 import java.util.Objects;
 
 public class Human implements Comparable {
-    private int id;
-    private String name;
-    private int age;
+    private final int id;
+    private final String name;
+    private final int age;
 
     public Human(int id, String name, int age) {
         this.id = id;

@@ -25,12 +25,8 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class HumanListFragment extends Fragment {
-    private RecyclerView recyclerView;
-    private TextView tvTitle;
     private HumanAdapter humanAdapter;
     private List<Human> newHumans;
-    private Button btnGo;
-    private Button btnBack;
 
     public static Fragment newInstance() {
         return new HumanListFragment();
@@ -47,9 +43,9 @@ public class HumanListFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         newHumans = HumanManager.getHumanListOne();
-        btnGo = view.findViewById(R.id.btnGoToCanvas);
-        btnBack = view.findViewById(R.id.btnBack);
-        tvTitle = view.findViewById(R.id.tvTitle);
+        Button btnGo = view.findViewById(R.id.btnGoToCanvas);
+        Button btnBack = view.findViewById(R.id.btnBack);
+        TextView tvTitle = view.findViewById(R.id.tvTitle);
         tvTitle.setTextColor(Color.GREEN);
 
         intiRecyclerView(view);
@@ -60,7 +56,7 @@ public class HumanListFragment extends Fragment {
     }
 
     private void intiRecyclerView(View view) {
-        recyclerView = view.findViewById(R.id.recycler_view);
+        RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         humanAdapter = new HumanAdapter(newHumans);

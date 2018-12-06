@@ -9,8 +9,8 @@ import android.view.View;
 
 public class HumanListItemDecorator extends RecyclerView.ItemDecoration {
     private final Paint paint;
-    private int offset;
-    private int halfOffset;
+    private final int offset;
+    private final int halfOffset;
 
     public HumanListItemDecorator(int offset) {
         paint = new Paint();
