@@ -24,16 +24,15 @@ public class HumanAdapter extends RecyclerView.Adapter<HumanAdapter.HumanViewHol
     //Устанавлиет новый список и обновляет RecyclerView
     public void setHumans(List<Human> humans) {
 //        this.humans.clear();
-//        this.humans.addAll(contacts);
+//        this.humans.addAll(humans);
 //        notifyDataSetChanged();
-        final HumanListDiffUtilCallback diffUtilCallback = new HumanListDiffUtilCallback(this.humans,humans);
+        final HumanListDiffUtilCallback diffUtilCallback = new HumanListDiffUtilCallback(this.humans, humans);
         final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffUtilCallback);
-        diffResult.dispatchUpdatesTo(this);
-
 
         this.humans.clear();
         this.humans.addAll(humans);
 
+        diffResult.dispatchUpdatesTo(this);
     }
 
     @NonNull

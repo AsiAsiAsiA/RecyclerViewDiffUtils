@@ -1,9 +1,9 @@
 package com.example.semen.recyclerviewdiffutils;
 
 
+import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,7 +18,6 @@ import com.example.semen.recyclerviewdiffutils.adapter.HumanListItemDecorator;
 import com.example.semen.recyclerviewdiffutils.model.Human;
 import com.example.semen.recyclerviewdiffutils.model.HumanManager;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -55,21 +54,18 @@ public class HumanListFragment extends Fragment {
 
         intiRecyclerView(view);
 
-//        DividerItemDecoration decoration = new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL);
-//        recyclerView.addItemDecoration(decoration);
-
-//        button.setOnClickListener((v) -> goToCanvas(GraphicFragment.newInstance()));
-
         btnGo.setOnClickListener((v) -> humanAdapter.setHumans(HumanManager.getHumanListTwo()));
-        btnBack.setOnClickListener((v) -> humanAdapter.setHumans(HumanManager.getHumanListOne()));
+//        btnBack.setOnClickListener((v) -> humanAdapter.setHumans(HumanManager.getHumanListOne()));
     }
 
     private void intiRecyclerView(View view) {
         recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
         humanAdapter = new HumanAdapter(newHumans);
-        recyclerView.addItemDecoration(new HumanListItemDecorator(30));
         recyclerView.setAdapter(humanAdapter);
+
+        recyclerView.addItemDecoration(new HumanListItemDecorator(30));
     }
 
     private void goToCanvas(Fragment fragment) {
