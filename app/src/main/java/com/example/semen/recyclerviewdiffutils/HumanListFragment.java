@@ -54,8 +54,9 @@ public class HumanListFragment extends Fragment {
 
         intiRecyclerView(view);
 
+        //TODO: Crash if delete Elements
         btnGo.setOnClickListener((v) -> humanAdapter.setHumans(HumanManager.getHumanListTwo()));
-//        btnBack.setOnClickListener((v) -> humanAdapter.setHumans(HumanManager.getHumanListOne()));
+        btnBack.setOnClickListener((v) -> humanAdapter.setHumans(HumanManager.getHumanListThree()));
     }
 
     private void intiRecyclerView(View view) {
@@ -66,12 +67,5 @@ public class HumanListFragment extends Fragment {
         recyclerView.setAdapter(humanAdapter);
 
         recyclerView.addItemDecoration(new HumanListItemDecorator(30));
-    }
-
-    private void goToCanvas(Fragment fragment) {
-        getFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .addToBackStack(null)
-                .commit();
     }
 }
