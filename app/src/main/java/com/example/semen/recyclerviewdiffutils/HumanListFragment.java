@@ -15,13 +15,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.SearchView;
-import android.widget.TextView;
 
 import com.example.semen.recyclerviewdiffutils.adapter.HumanAdapter;
 import com.example.semen.recyclerviewdiffutils.adapter.HumanListItemDecorator;
 import com.example.semen.recyclerviewdiffutils.model.Human;
 import com.example.semen.recyclerviewdiffutils.model.HumanManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -30,7 +30,7 @@ import java.util.List;
  */
 public class HumanListFragment extends Fragment {
     private HumanAdapter humanAdapter;
-    private List<Human> newHumans;
+    private List<Human> humans;
     private SearchView searchView;
     private SearchView.OnQueryTextListener queryTextListener;
 
@@ -50,10 +50,9 @@ public class HumanListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
 
-        newHumans = HumanManager.getHumanListOne();
+        humans = HumanManager.getHumanListOne();
         Button btnGo = view.findViewById(R.id.btnGoToCanvas);
         Button btnBack = view.findViewById(R.id.btnBack);
-        TextView tvTitle = view.findViewById(R.id.tvTitle);
 
         intiRecyclerView(view);
 
@@ -80,6 +79,16 @@ public class HumanListFragment extends Fragment {
             @Override
             public boolean onQueryTextChange(String query) {
                 Log.i("onQueryTextChange", query);
+                String userInput = query.toLowerCase();
+                List<Human> newList = new ArrayList<>();
+
+                for (Human human : humans) {
+                    if (human.getName().toLowerCase().contains(userInput)) {
+                        newList.add(human);
+                    }
+                }
+
+                humanAdapter.setHumans(newList);
                 return true;
             }
         });
@@ -102,7 +111,7 @@ public class HumanListFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        humanAdapter = new HumanAdapter(newHumans);
+        humanAdapter = new HumanAdapter(humans);
         recyclerView.setAdapter(humanAdapter);
 
         recyclerView.addItemDecoration(new HumanListItemDecorator(30));
