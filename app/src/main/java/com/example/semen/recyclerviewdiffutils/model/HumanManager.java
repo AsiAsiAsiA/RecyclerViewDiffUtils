@@ -40,7 +40,6 @@ public class HumanManager {
         humanList.add(new Human(4, "LeBron", 22));
         humanList.add(new Human(5, "Kobe", 23));
 
-
         return humanList;
     }
 }

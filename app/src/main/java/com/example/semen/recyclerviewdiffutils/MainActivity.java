@@ -1,11 +1,12 @@
 package com.example.semen.recyclerviewdiffutils;
 
-import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
+
+import com.arellomobile.mvp.MvpAppCompatActivity;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends MvpAppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -13,11 +14,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         loadFragment(HumanListFragment.newInstance());
-
     }
 
     private void loadFragment(Fragment fragment) {
-        getFragmentManager().beginTransaction()
+        getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .commit();
     }

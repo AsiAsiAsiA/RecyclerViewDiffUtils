@@ -16,25 +16,31 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.SearchView;
 
+import com.arellomobile.mvp.MvpAppCompatFragment;
+import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.example.semen.recyclerviewdiffutils.adapter.HumanAdapter;
 import com.example.semen.recyclerviewdiffutils.adapter.HumanListItemDecorator;
 import com.example.semen.recyclerviewdiffutils.model.Human;
 import com.example.semen.recyclerviewdiffutils.model.HumanManager;
+import com.example.semen.recyclerviewdiffutils.view.HumanListFragmentView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HumanListFragment extends Fragment {
+public class HumanListFragment extends MvpAppCompatFragment implements HumanListFragmentView {
     private HumanAdapter humanAdapter;
     private List<Human> humans;
     private SearchView searchView;
     private SearchView.OnQueryTextListener queryTextListener;
+    private String searchString;
 
-    public static Fragment newInstance() {
+    @InjectPresenter
+    HumanListFragmentPresenter presenter;
+
+    public static HumanListFragment newInstance() {
         return new HumanListFragment();
     }
 
@@ -54,7 +60,7 @@ public class HumanListFragment extends Fragment {
         Button btnGo = view.findViewById(R.id.btnGoToCanvas);
         Button btnBack = view.findViewById(R.id.btnBack);
 
-        intiRecyclerView(view);
+        initRecyclerView(view);
 
         btnGo.setOnClickListener((v) -> humanAdapter.setHumans(HumanManager.getHumanListTwo()));
         btnBack.setOnClickListener((v) -> humanAdapter.setHumans(HumanManager.getHumanListThree()));
@@ -67,11 +73,28 @@ public class HumanListFragment extends Fragment {
 
         MenuItem searchItem = menu.findItem(R.id.menuSearch);
         final SearchView searchView = (SearchView) searchItem.getActionView();
+
+//        if (searchString != null && !searchString.isEmpty()) {
+//            Log.i("saveSearch", searchString);
+//            searchItem.expandActionView();
+//            searchView.setQuery(searchString, true);
+//            searchView.clearFocus();
+//        }
+
+        searchItem.expandActionView();
+        searchView.setQuery("a",true);
+        searchView.clearFocus();
+        //раскрывает searchview
+        searchView.setIconified(false);
+        presenter.search(humans, "a");
+
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             //реагирует на отправление текста
             @Override
             public boolean onQueryTextSubmit(String newText) {
                 Log.i("onQueryTextSubmit", newText);
+                presenter.search(humans, newText);
                 return true;
             }
 
@@ -79,16 +102,7 @@ public class HumanListFragment extends Fragment {
             @Override
             public boolean onQueryTextChange(String query) {
                 Log.i("onQueryTextChange", query);
-                String userInput = query.toLowerCase();
-                List<Human> newList = new ArrayList<>();
-
-                for (Human human : humans) {
-                    if (human.getName().toLowerCase().contains(userInput)) {
-                        newList.add(human);
-                    }
-                }
-
-                humanAdapter.setHumans(newList);
+                presenter.search(humans, query);
                 return true;
             }
         });
@@ -103,11 +117,11 @@ public class HumanListFragment extends Fragment {
             default:
                 break;
         }
-        searchView.setOnQueryTextListener(queryTextListener);
         return super.onOptionsItemSelected(item);
     }
 
-    private void intiRecyclerView(View view) {
+
+    private void initRecyclerView(View view) {
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -116,4 +130,11 @@ public class HumanListFragment extends Fragment {
 
         recyclerView.addItemDecoration(new HumanListItemDecorator(30));
     }
+
+    @Override
+    public void updateList(List<Human> newList) {
+        humanAdapter.setHumans(newList);
+    }
+
+
 }

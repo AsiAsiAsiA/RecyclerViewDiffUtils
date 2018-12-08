@@ -29,6 +29,8 @@ public class HumanListItemDecorator extends RecyclerView.ItemDecoration {
     public void onDraw(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
         for (int i = 0; i < parent.getChildCount(); i++) {
             final View view = parent.getChildAt(i);
+
+            //Draw rectangle
             c.drawRect(view.getLeft() - halfOffset,
                     view.getTop() - halfOffset,
                     view.getRight() + halfOffset,
