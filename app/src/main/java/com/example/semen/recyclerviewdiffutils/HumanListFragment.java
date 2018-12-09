@@ -35,7 +35,9 @@ public class HumanListFragment extends MvpAppCompatFragment implements HumanList
     private List<Human> humans;
     private SearchView searchView;
     private SearchView.OnQueryTextListener queryTextListener;
-    private String searchString;
+    private String q;
+
+    private static final String SEARCH_KEY = "search_key";
 
     @InjectPresenter
     HumanListFragmentPresenter presenter;
@@ -45,9 +47,11 @@ public class HumanListFragment extends MvpAppCompatFragment implements HumanList
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            Log.i("SearchView", "Get string in onViewCreated: " + savedInstanceState.getString(SEARCH_KEY));
+            q = savedInstanceState.getString(SEARCH_KEY);
+        }
         return inflater.inflate(R.layout.fragment_human_list, container, false);
     }
 
@@ -62,9 +66,16 @@ public class HumanListFragment extends MvpAppCompatFragment implements HumanList
 
         initRecyclerView(view);
 
+//        if (savedInstanceState != null) {
+//            searchString = savedInstanceState.getString(SEARCH_KEY);
+//            Log.i("saveSearch", searchString);
+//        }
+
         btnGo.setOnClickListener((v) -> humanAdapter.setHumans(HumanManager.getHumanListTwo()));
         btnBack.setOnClickListener((v) -> humanAdapter.setHumans(HumanManager.getHumanListThree()));
+
     }
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -72,22 +83,10 @@ public class HumanListFragment extends MvpAppCompatFragment implements HumanList
         inflater.inflate(R.menu.menu_search, menu);
 
         MenuItem searchItem = menu.findItem(R.id.menuSearch);
-        final SearchView searchView = (SearchView) searchItem.getActionView();
-
-//        if (searchString != null && !searchString.isEmpty()) {
-//            Log.i("saveSearch", searchString);
-//            searchItem.expandActionView();
-//            searchView.setQuery(searchString, true);
-//            searchView.clearFocus();
-//        }
-
-        searchItem.expandActionView();
-        searchView.setQuery("a",true);
-        searchView.clearFocus();
-        //раскрывает searchview
+        searchView = (SearchView) searchItem.getActionView();
         searchView.setIconified(false);
-        presenter.search(humans, "a");
 
+        Log.i("SearchView", "Get string in onCreateOptionsMenu: " + String.valueOf(q));
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             //реагирует на отправление текста
@@ -108,19 +107,6 @@ public class HumanListFragment extends MvpAppCompatFragment implements HumanList
         });
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menuSearch:
-                // Not implemented here
-                return false;
-            default:
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-
     private void initRecyclerView(View view) {
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -136,5 +122,10 @@ public class HumanListFragment extends MvpAppCompatFragment implements HumanList
         humanAdapter.setHumans(newList);
     }
 
-
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(SEARCH_KEY, searchView.getQuery().toString());
+        Log.i("SearchView", "Put string to Bundle: " + searchView.getQuery().toString());
+    }
 }
