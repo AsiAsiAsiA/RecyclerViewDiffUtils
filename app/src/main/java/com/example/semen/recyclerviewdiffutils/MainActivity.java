@@ -13,7 +13,9 @@ public class MainActivity extends MvpAppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        loadFragment(HumanListFragment.newInstance());
+        if (savedInstanceState == null) {
+            loadFragment(HumanListFragment.newInstance());
+        }
     }
 
     private void loadFragment(Fragment fragment) {

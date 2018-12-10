@@ -34,8 +34,7 @@ public class HumanListFragment extends MvpAppCompatFragment implements HumanList
     private HumanAdapter humanAdapter;
     private List<Human> humans;
     private SearchView searchView;
-    private SearchView.OnQueryTextListener queryTextListener;
-    private String q;
+    private String searchString;
 
     private static final String SEARCH_KEY = "search_key";
 
@@ -48,10 +47,7 @@ public class HumanListFragment extends MvpAppCompatFragment implements HumanList
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
-            Log.i("SearchView", "Get string in onViewCreated: " + savedInstanceState.getString(SEARCH_KEY));
-            q = savedInstanceState.getString(SEARCH_KEY);
-        }
+
         return inflater.inflate(R.layout.fragment_human_list, container, false);
     }
 
@@ -66,14 +62,12 @@ public class HumanListFragment extends MvpAppCompatFragment implements HumanList
 
         initRecyclerView(view);
 
-//        if (savedInstanceState != null) {
-//            searchString = savedInstanceState.getString(SEARCH_KEY);
-//            Log.i("saveSearch", searchString);
-//        }
-
         btnGo.setOnClickListener((v) -> humanAdapter.setHumans(HumanManager.getHumanListTwo()));
         btnBack.setOnClickListener((v) -> humanAdapter.setHumans(HumanManager.getHumanListThree()));
 
+        if (savedInstanceState != null) {
+            searchString = savedInstanceState.getString(SEARCH_KEY);
+        }
     }
 
 
@@ -84,9 +78,11 @@ public class HumanListFragment extends MvpAppCompatFragment implements HumanList
 
         MenuItem searchItem = menu.findItem(R.id.menuSearch);
         searchView = (SearchView) searchItem.getActionView();
-        searchView.setIconified(false);
 
-        Log.i("SearchView", "Get string in onCreateOptionsMenu: " + String.valueOf(q));
+        if (searchString != null) {
+            searchView.setIconified(false);
+            searchView.setQuery(searchString, true);
+        }
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             //реагирует на отправление текста
@@ -126,6 +122,5 @@ public class HumanListFragment extends MvpAppCompatFragment implements HumanList
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(SEARCH_KEY, searchView.getQuery().toString());
-        Log.i("SearchView", "Put string to Bundle: " + searchView.getQuery().toString());
     }
 }
